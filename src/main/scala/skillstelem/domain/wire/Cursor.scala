@@ -22,6 +22,6 @@ object Cursor {
        toolName: String,
        toolInput: ToolInput
    ) extends CursorHook {
-        def isASkill = toolInput.skillName.nonEmpty
+      def isASkill = toolInput.skillName.nonEmpty
    }
 }

@@ -7,25 +7,26 @@ import skillstelem.domain.wire.Claude.*
 class ClaudeSuite extends munit.FunSuite {
 
    test("Decode PostToolUse") {
-      val raw = """
-        {
-            "session_id": "abc123",
-            "transcript_path": "/Users/.../.claude/projects/.../00893aaf-19fa-41d2-8238-13269b9b3ca0.jsonl",
-            "cwd": "/Users/...",
-            "permission_mode": "default",
-            "hook_event_name": "PostToolUse",
-            "tool_name": "Skill",
-            "tool_input": {
-                "skill": "review"
-            },
-            "tool_response": {
-                "filePath": "/path/to/file.txt",
-                "success": true
-            },
-            "tool_use_id": "toolu_01ABC123...",
-            "duration_ms": 12
-        }
-        """
+      val raw = WireSamples.Claude.ptuSample
+      // val raw = """
+      //   {
+      //       "session_id": "abc123",
+      //       "transcript_path": "/Users/.../.claude/projects/.../00893aaf-19fa-41d2-8238-13269b9b3ca0.jsonl",
+      //       "cwd": "/Users/...",
+      //       "permission_mode": "default",
+      //       "hook_event_name": "PostToolUse",
+      //       "tool_name": "Skill",
+      //       "tool_input": {
+      //           "skill": "review"
+      //       },
+      //       "tool_response": {
+      //           "filePath": "/path/to/file.txt",
+      //           "success": true
+      //       },
+      //       "tool_use_id": "toolu_01ABC123...",
+      //       "duration_ms": 12
+      //   }
+      //   """
 
       decode[ClaudeHook](raw) match {
          case Right(ptu: PostToolUse) => {
@@ -39,20 +40,21 @@ class ClaudeSuite extends munit.FunSuite {
    }
 
    test("Decode UserPromptExpansion") {
-      val raw = """
-        {
-           "session_id": "abc123",
-           "transcript_path": "/Users/.../00893aaf.jsonl",
-           "cwd": "/Users/...",
-           "permission_mode": "default",
-           "hook_event_name": "UserPromptExpansion",
-           "expansion_type": "slash_command",
-           "command_name": "example-skill",
-           "command_args": "arg1 arg2",
-           "command_source": "plugin",
-           "prompt": "/example-skill arg1 arg2"
-        }
-        """
+      val raw = WireSamples.Claude.upeSample
+      // val raw = """
+      //   {
+      //      "session_id": "abc123",
+      //      "transcript_path": "/Users/.../00893aaf.jsonl",
+      //      "cwd": "/Users/...",
+      //      "permission_mode": "default",
+      //      "hook_event_name": "UserPromptExpansion",
+      //      "expansion_type": "slash_command",
+      //      "command_name": "example-skill",
+      //      "command_args": "arg1 arg2",
+      //      "command_source": "plugin",
+      //      "prompt": "/example-skill arg1 arg2"
+      //   }
+      //   """
 
       decode[ClaudeHook](raw) match {
          case Right(upe: UserPromptExpansion) => {

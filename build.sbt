@@ -10,7 +10,8 @@ lazy val root = project
      run / fork := true,
      scalacOptions ++= Seq(
        "-deprecation",
-       "-Wunused:all"
+       "-Wunused:all",
+       "-no-indent",
      ),
      libraryDependencies ++= Seq(
        "org.typelevel" %% "cats-effect"         % "3.7.0",
