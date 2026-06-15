@@ -7,9 +7,8 @@ import skillstelem.domain.wire.WireSamples
 class HookSuite extends munit.FunSuite {
 
    test("Claude Wire into Domain") {
-      val rawPtu = WireSamples.Claude.ptuSample
-      val rawUpe = WireSamples.Claude.upeSample
 
+      val rawPtu = WireSamples.Claude.ptuSample
       decode[AcceptedHooks](rawPtu) match {
          case Right(value) => {
             val ptu = PostToolUse.fromAccepted(value)
@@ -18,6 +17,7 @@ class HookSuite extends munit.FunSuite {
          case Left(err) => fail(s"Decode failed: $err")
       }
 
+      val rawUpe = WireSamples.Claude.upeSample
       decode[AcceptedHooks](rawUpe) match {
          case Right(value) => {
             val ptu = PostToolUse.fromAccepted(value)
