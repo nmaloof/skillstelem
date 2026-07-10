@@ -1,10 +1,23 @@
 package skillstelem.modules
 
-import skillstelem.algebras.HookAlg
-import skillstelem.local.LocalDev
+import cats.effect.{IO, Ref}
+import doobie.Transactor
 
-class Algebras(val hook: HookAlg) {}
+import skillstelem.algebras.*
+import skillstelem.domain.*
+import skillstelem.local.LocalDev
+import skillstelem.repos.{HookRepo, MetricsRepo}
+
+class Algebras(val hook: HookAlg, val metrics: MetricsAlg) {}
 
 object Algebras {
-   def makeLocal = new Algebras(LocalDev.HookPrinter())
+   def makeInMemory = {
+      val metrics = Metrics()
+      val r       = Ref.unsafe[IO, Metrics](metrics)
+      new Algebras(LocalDev.InMemoryHook(r), LocalDev.InMemoryMetrics(r))
+   }
+
+   def makeLocal(xa: Transactor[IO]) = {
+      new Algebras(HookRepo(xa), MetricsRepo(xa))
+   }
 }

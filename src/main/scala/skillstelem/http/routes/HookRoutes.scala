@@ -17,7 +17,7 @@ class HookRoutes(hookAlg: HookAlg)(using LoggerFactory[IO]) extends Http4sDsl[IO
    private val prefixPath = "/hook"
 
    private val insecureRoutes = HttpRoutes.of[IO] {
-      case GET -> Root        => Ok("Got")
+      case GET -> Root        => Ok("Hook Routes")
       case req @ POST -> Root =>
          for {
             raw  <- req.as[String]
