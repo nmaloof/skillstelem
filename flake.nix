@@ -30,6 +30,38 @@
                     '';
                 };
             };
+
+            packages = rec {
+                default = app;
+
+                app = pkgs.stdenv.mkDerivation {
+                    pname = "skills-telem";
+                    version = "0.1.0";
+                };
+
+                docker = pkgs.dockerTools.buildLayeredImage {
+                    name = "skills-telem";
+                    tag = "latest";
+                    contents = [
+                        pkgs.jre
+                        pkgs.coreutils
+                        pkgs.bashInteractive
+                        pkgs.dockerTools.fakeNss
+                        pkgs.dockerTools.usrBinEnv
+                        pkgs.dockerTools.binSh
+                    ];
+                    config = {
+                        Cmd = [ "true" ];
+                        Env = [
+                            "JAVA_HOME=${pkgs.jre}"
+                        ];
+                        ExposedPorts = {
+                            "9090/tcp" = {};
+                        };
+                        User = "1000:1000";
+                    };
+                };
+            };
         }
     );
 }
