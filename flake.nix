@@ -4,9 +4,10 @@
     inputs = {
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
         flake-utils.url = "github:numtide/flake-utils";
+        sbt-deriv.url = "github:zaninime/sbt-derivation";
     };
 
-    outputs = { self, nixpkgs, flake-utils, ... }: flake-utils.lib.eachDefaultSystem( system: 
+    outputs = { self, nixpkgs, flake-utils, sbt-deriv, ... }: flake-utils.lib.eachDefaultSystem( system:
         let
             javaOverlay = final: prev: {
                 jdk = prev.temurin-bin-25;
@@ -34,26 +35,48 @@
             packages = rec {
                 default = app;
 
-                app = pkgs.stdenv.mkDerivation {
+                app = sbt-deriv.lib.mkSbtDerivation {
+                    inherit pkgs;
+
                     pname = "skills-telem";
                     version = "0.1.0";
-                };
+                    src = ./.;
 
-                docker = pkgs.dockerTools.buildLayeredImage {
+                    nativeBuildInputs = [ pkgs.jdk ];
+
+                    depsSha256 = "sha256-GyoNAoZBkgcGYf8fmU0gQkP3lneUyA8UDoMeLZbCN4w=";
+
+                    buildPhase = ''
+                        sbt stage
+                    '';
+
+                    installPhase = ''
+                        mkdir -p $out
+                        cp -r target/universal/stage/* $out/
+                    '';
+                };
+                
+                container = pkgs.dockerTools.buildLayeredImage {
                     name = "skills-telem";
                     tag = "latest";
                     contents = [
+                        app
                         pkgs.jre
                         pkgs.coreutils
-                        pkgs.bashInteractive
                         pkgs.dockerTools.fakeNss
-                        pkgs.dockerTools.usrBinEnv
-                        pkgs.dockerTools.binSh
+                        # pkgs.bash
+                        # pkgs.dockerTools.usrBinEnv
+                        # pkgs.dockerTools.binSh
                     ];
+                    fakeRootCommands = ''
+                        mkdir -p tmp data
+                        chmod 1777 tmp
+                        chown 1000:1000 data
+                    '';
                     config = {
-                        Cmd = [ "true" ];
+                        Cmd = [ "${app}/bin/skills-telem" ];
                         Env = [
-                            "JAVA_HOME=${pkgs.jre}"
+                            # "JAVA_HOME=${pkgs.jre}"
                         ];
                         ExposedPorts = {
                             "9090/tcp" = {};

@@ -39,6 +39,7 @@ lazy val root = project
        "org.tpolecat" %% "doobie-core"   % "1.0.0-RC12",
        "org.tpolecat" %% "doobie-hikari" % "1.0.0-RC12",
        "org.xerial"    % "sqlite-jdbc"   % "3.49.1.0",
+       "com.github.geirolz" %% "fly4s" % "2.0.0",
 
        // Misc
        "is.cir" %% "ciris"        % "3.14.1",
