@@ -22,7 +22,7 @@ class HookRoutes(hookAlg: HookAlg)(using LoggerFactory[IO]) extends Http4sDsl[IO
          for {
             raw  <- req.as[String]
             resp <- decode[AcceptedHooks](raw) match {
-               case Left(err)    => logger.error(err)(s"Failed to decode Hook Payload: $raw") *> BadRequest()
+               case Left(err) => logger.error(err)("Failed to decode Hook Payload") *> logger.debug(s"Failed payload: $raw") *> BadRequest()
                case Right(value) => {
                   PostToolUse.fromAccepted(value) match {
                      case Some(ptu) => logger.info(s"Hook decoded from ${ptu.source}") *> hookAlg.recordToolUse(ptu) *> Accepted()
