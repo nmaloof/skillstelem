@@ -18,6 +18,13 @@
                 inherit system;
                 overlays = [ javaOverlay ];
             };
+
+            startPg = pkgs.writeShellApplication {
+                name = "start-pg";
+                runtimeInputs = [ pkgs.postgresql ];
+                text = builtins.readFile ./start-pg.sh ;
+            };
+
         in {
             devShells = {
                 default = pkgs.mkShell {
@@ -25,9 +32,12 @@
                         pkgs.jdk
                         pkgs.sbt
                         pkgs.sqlite
+                        pkgs.postgresql
                     ];
                     shellHook = ''
                         export JAVA_HOME=${pkgs.jdk}
+                        source ${startPg}/bin/start-pg
+                        alias psql="psql -d skills_telem"
                     '';
                 };
             };
