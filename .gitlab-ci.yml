@@ -9,7 +9,7 @@ test:
   before_script:
     - echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
   script:
-    - nix develop --command sbt stage
+    - nix develop .#ci --command sbt stage
 
 
 build-and-push:
@@ -22,8 +22,10 @@ build-and-push:
   before_script:
     - echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
     - nix-env -iA nixpkgs.skopeo
+    - mkdir -p /etc/containers
+    - echo '{"default":[{"type":"insecureAcceptAnything"}]}' > /etc/containers/policy.json
     - echo "$QUAY_PASSWORD" | skopeo login -u "$QUAY_USERNAME" --pasword-stdin $REGISTRY
   script:
-    - nix build .#container
-    - skopeo copy "oci-archive:$(readlink result)" "docker://${IMAGE_NAME}:${IMAGE_TAG}"
-    - skopeo copy "oci-archive:$(readlink result)" "docker://${IMAGE_NAME}:latest"
+    - nix build .#container -L
+    - skopeo copy "docker-archive:$(readlink result)" "docker://${IMAGE_NAME}:${IMAGE_TAG}"
+    - skopeo copy "docker-archive:$(readlink result)" "docker://${IMAGE_NAME}:latest"
