@@ -7,4 +7,5 @@ import skillstelem.domain.Metric
 trait MetricsAlg {
    def getSkillCounts(): IO[Metric[Int]]
    def getSourceCounts(): IO[Metric[Int]]
+   def getSkillSessionPcts(): IO[Metric[Int]]
 }

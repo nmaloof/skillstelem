@@ -3,11 +3,11 @@ package skillstelem
 import cats.syntax.all.*
 import ciris.*
 import ciris.http4s.*
-import com.comcast.ip4s.{ipv4, port, Host, Port}
+import com.comcast.ip4s.{Host, Port, ipv4, port}
 
 final case class ApiConfig(host: Host, port: Port)
-final case class DatabaseConfig(url: String, username: String, password: String){
-  val driverClassName = "org.postgresql.Driver"
+final case class DatabaseConfig(url: String, username: String, password: String) {
+   val driverClassName = "org.postgresql.Driver"
 }
 
 final case class AppConfig(apiConfig: ApiConfig, dbConfig: DatabaseConfig)

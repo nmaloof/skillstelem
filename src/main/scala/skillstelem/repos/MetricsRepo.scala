@@ -14,6 +14,8 @@ class MetricsRepo(xa: Transactor[IO]) extends MetricsAlg {
    override def getSkillCounts(): IO[Metric[Int]]  = totalCountsQuery.to[List].map(_.toMap).transact(xa)
    override def getSourceCounts(): IO[Metric[Int]] = skillCountsQuery.to[List].map(_.toMap).transact(xa)
 
+   override def getSkillSessionPcts(): IO[Metric[Int]] = skillSessionPcts.to[List].map(_.toMap).transact(xa)
+
 }
 
 private object MetricsRepoSQL {
@@ -28,5 +30,14 @@ private object MetricsRepoSQL {
         select source, count(*)
         from tool_calls
         group by source
+    """.query[(String, Int)]
+
+   val skillSessionPcts = sql"""
+        select
+            skill_name,
+            1.0 * count(distinct session_id) / (select count(distinct session_id) from tool_calls)
+        from tool_calls
+        group by skill_name
+        order by pct_session desc
     """.query[(String, Int)]
 }

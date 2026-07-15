@@ -17,6 +17,8 @@ class MetricsRoutes(metricsAlg: MetricsAlg)(using LoggerFactory[IO]) extends Htt
       case GET -> Root                  => Ok("Metrics Route")
       case GET -> Root / "skillCounts"  => metricsAlg.getSkillCounts().flatMap(Ok(_))
       case GET -> Root / "sourceCounts" => metricsAlg.getSourceCounts().flatMap(Ok(_))
+
+      case GET -> Root / "skillSessionPcts" => metricsAlg.getSkillSessionPcts().flatMap(Ok(_))
    }
 
    val routes = Router(prefixPath -> insecureRoutes)

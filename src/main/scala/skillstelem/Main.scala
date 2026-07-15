@@ -7,7 +7,7 @@ import fly4s.Fly4s
 import fly4s.data.{Fly4sConfig, Locations, ValidatePattern}
 import fly4s.implicits.*
 import org.http4s.ember.server.EmberServerBuilder
-import org.typelevel.log4cats.{slf4j, LoggerFactory}
+import org.typelevel.log4cats.{LoggerFactory, slf4j}
 
 import skillstelem.modules.{Algebras, HttpApi}
 
@@ -19,12 +19,12 @@ object Main extends IOApp {
       val logger = LoggerFactory.getLogger
 
       val app = for {
-         config <- Resource.eval(AppConfig.config.load[IO]).evalTap{ conf => 
+         config <- Resource.eval(AppConfig.config.load[IO]).evalTap { conf =>
             logger.info(s"Server listening on: '${conf.apiConfig.host}:${conf.apiConfig.port}'")
          }
-         xa     <- makeTransactor(config.dbConfig)
-         _      <- makeFlyway(config.dbConfig).evalMap(_.validateAndMigrate.result)
-         algs   <- Algebras.makeLocal(xa)
+         xa   <- makeTransactor(config.dbConfig)
+         _    <- makeFlyway(config.dbConfig).evalMap(_.validateAndMigrate.result)
+         algs <- Algebras.makeLocal(xa)
          httpApi = new HttpApi(algs)
          _ <- makeServer(config.apiConfig, httpApi)
       } yield ()

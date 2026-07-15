@@ -16,7 +16,8 @@ object LocalDev {
    }
 
    class InMemoryMetrics(ref: Ref[IO, Metrics]) extends MetricsAlg {
-      override def getSkillCounts(): IO[Map[String, Int]]  = ???
-      override def getSourceCounts(): IO[Map[String, Int]] = ???
+      override def getSkillCounts(): IO[Metric[Int]]      = ???
+      override def getSourceCounts(): IO[Metric[Int]]     = ???
+      override def getSkillSessionPcts(): IO[Metric[Int]] = ???
    }
 }
