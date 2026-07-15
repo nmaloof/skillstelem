@@ -9,4 +9,3 @@ project/project/
 project/metals.sbt
 
 .vscode/
-flake.lock

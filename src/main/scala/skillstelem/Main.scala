@@ -7,7 +7,7 @@ import fly4s.Fly4s
 import fly4s.data.{Fly4sConfig, Locations, ValidatePattern}
 import fly4s.implicits.*
 import org.http4s.ember.server.EmberServerBuilder
-import org.typelevel.log4cats.{LoggerFactory, slf4j}
+import org.typelevel.log4cats.{slf4j, LoggerFactory}
 
 import skillstelem.modules.{Algebras, HttpApi}
 

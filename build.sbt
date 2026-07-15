@@ -41,9 +41,9 @@ lazy val root = project
        "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC12",
 
        "org.xerial"          % "sqlite-jdbc"                % "3.49.1.0",
-       "org.postgresql"      % "postgresql"                 % "42.7.7",
+       "org.postgresql"      % "postgresql"                 % "42.7.13",
        "com.github.geirolz" %% "fly4s"                      % "2.0.0",
-       "org.flywaydb"        % "flyway-database-postgresql" % "11.8.2",
+       "org.flywaydb"        % "flyway-database-postgresql" % "12.10.0",
 
        // Misc
        "is.cir" %% "ciris"        % "3.14.1",

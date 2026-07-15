@@ -70,7 +70,7 @@
 
                     nativeBuildInputs = [ pkgs.jdk ];
 
-                    depsSha256 = "sha256-GyoNAoZBkgcGYf8fmU0gQkP3lneUyA8UDoMeLZbCN4w=";
+                    depsSha256 = "sha256-+Zi447iWlM1uboyBEm9lb2JuIMwBWEZTy6U8voYmGWo=";
 
                     buildPhase = ''
                         sbt stage
