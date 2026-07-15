@@ -36,10 +36,14 @@ lazy val root = project
        //    "io.circe" %% "circe-generic" % "0.14.15",
 
        // Database Libraries
-       "org.tpolecat" %% "doobie-core"   % "1.0.0-RC12",
-       "org.tpolecat" %% "doobie-hikari" % "1.0.0-RC12",
-       "org.xerial"    % "sqlite-jdbc"   % "3.49.1.0",
-       "com.github.geirolz" %% "fly4s" % "2.0.0",
+       "org.tpolecat" %% "doobie-core"     % "1.0.0-RC12",
+       "org.tpolecat" %% "doobie-hikari"   % "1.0.0-RC12",
+       "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC12",
+
+       "org.xerial"          % "sqlite-jdbc"                % "3.49.1.0",
+       "org.postgresql"      % "postgresql"                 % "42.7.7",
+       "com.github.geirolz" %% "fly4s"                      % "2.0.0",
+       "org.flywaydb"        % "flyway-database-postgresql" % "11.8.2",
 
        // Misc
        "is.cir" %% "ciris"        % "3.14.1",

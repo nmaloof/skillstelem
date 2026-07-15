@@ -45,7 +45,7 @@ object Main extends IOApp {
    def makeTransactor(dbConfig: DatabaseConfig) = {
       val config = {
          val c = new HikariConfig()
-         c.setDriverClassName("org.sqlite.JDBC")
+         c.setDriverClassName(dbConfig.driverClassName)
          c.setJdbcUrl(dbConfig.url)
          c.setUsername(dbConfig.username)
          c.setPassword(dbConfig.password)

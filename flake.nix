@@ -38,6 +38,22 @@
                         export JAVA_HOME=${pkgs.jdk}
                         source ${startPg}/bin/start-pg
                         alias psql="psql -d skills_telem"
+
+                        set +e
+
+                        export DB_URL="jdbc:postgresql://localhost:5432/skills_telem"
+                        export DB_USER="appuser"
+                        export DB_PASS="apppassword"
+                    '';
+                };
+
+                ci = pkgs.mkShell {
+                    buildInputs = [
+                        pkgs.jdk
+                        pkgs.sbt
+                    ];
+                    shellHook = ''
+                        export JAVA_HOME=${pkgs.jdk}
                     '';
                 };
             };
